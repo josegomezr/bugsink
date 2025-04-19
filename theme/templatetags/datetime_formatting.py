@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django import template
 from django.utils import timezone
 
@@ -35,3 +37,12 @@ def short_given_now(value):
     now = timezone.now()  # noqa
     default_timezone = timezone.get_current_timezone()
     timezone.localtime(value, default_timezone)
+
+
+@register.filter
+def date_from_ts(value):
+    """Convert an integer timestamp to date"""
+    try:
+        return timezone.make_aware(datetime.fromtimestamp(value))
+    except ValueError:
+        return value
