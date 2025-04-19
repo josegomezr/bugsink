@@ -16,6 +16,7 @@ class User(AbstractUser):
     # later)
 
     send_email_alerts = models.BooleanField(default=True, blank=True)
+    prefer_expanded = models.BooleanField(default=False, blank=True)
 
     class Meta:
         db_table = 'auth_user'

@@ -435,7 +435,7 @@ def issue_event_stacktrace(request, issue, event_pk=None, digest_order=None, nav
                     continue
                 exception['stacktrace']['frames'] = [f for f in reversed(exception['stacktrace']['frames'])]
 
-    show_all_frames = bool(request.GET.get("show_all_frames", ""))
+    show_all_frames = bool(request.GET.get("show_all_frames") or request.user.prefer_expanded)
 
     return render(request, "issues/stacktrace.html", {
         "tab": "stacktrace",

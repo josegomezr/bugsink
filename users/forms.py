@@ -141,6 +141,11 @@ class PreferencesForm(ModelForm):
     send_email_alerts = forms.ChoiceField(
         label=_("Send email alerts"), choices=TRUE_FALSE_CHOICES, required=False, widget=forms.Select())
 
+    prefer_expanded = forms.ChoiceField(
+        label=_("Show all frames by default"),
+        help_text=_('When disabled, the issue view only shows application frames by default. The full trace can be toggled with the "All Frames" button.'),
+        choices=TRUE_FALSE_CHOICES, required=False, widget=forms.Select())
+
     class Meta:
         model = User
-        fields = ("send_email_alerts",)
+        fields = ("send_email_alerts", "prefer_expanded")
