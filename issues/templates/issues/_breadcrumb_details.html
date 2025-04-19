@@ -1,0 +1,11 @@
+{% load stricter_templates %}
+	<strong>{{ key }}</strong>
+<div>
+{% for nestedKey, nestedValue in value|items %}
+	<div class="ml-4">
+		{% include "issues/_breadcrumb_details.html" with key=nestedKey value=nestedValue only %}
+	</div>
+{% empty %}
+	{{ value }}
+{% endfor %}
+</div>

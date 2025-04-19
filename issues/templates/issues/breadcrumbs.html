@@ -46,7 +46,17 @@
     {% endcomment %}
 
     <td class="w-full p-4 font-mono">
-        {{ breadcrumb.message }}
+            {% if breadcrumb.message %}
+                {{ breadcrumb.message }}
+            {% endif %}
+
+            {% if breadcrumb.data %}
+            <div>
+                {% for key, value in breadcrumb.data|items %}
+                    {% include "issues/_breadcrumb_details.html" with key=key value=value only %}
+                {% endfor %}
+            </div>
+            {% endif %}
     </td>
     <td class="p-4 font-bold text-slate-500 align-top">
         {{ breadcrumb.timestamp }}
