@@ -435,6 +435,8 @@ def issue_event_stacktrace(request, issue, event_pk=None, digest_order=None, nav
                     continue
                 exception['stacktrace']['frames'] = [f for f in reversed(exception['stacktrace']['frames'])]
 
+    show_all_frames = bool(request.GET.get("show_all_frames", ""))
+
     return render(request, "issues/stacktrace.html", {
         "tab": "stacktrace",
         "this_view": "event_stacktrace",
@@ -448,6 +450,7 @@ def issue_event_stacktrace(request, issue, event_pk=None, digest_order=None, nav
         "stack_of_plates": stack_of_plates,
         "mute_options": GLOBAL_MUTE_OPTIONS,
         "q": request.GET.get("q", ""),
+        "show_all_frames": show_all_frames,
         # event_qs_count is not used when there is no q, so no need to calculate it in that case
         "event_qs_count": _event_count(request, issue, event_x_qs) if request.GET.get("q") else None,
         "has_prev": event.digest_order > first_do,

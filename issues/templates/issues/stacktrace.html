@@ -2,6 +2,7 @@
 {% load static %}
 {% load stricter_templates %}
 {% load issues %}
+{% load add_to_qs %}
 {% load humanize %}
 
 {% block tab_content %}
@@ -40,6 +41,13 @@
         {% if forloop.counter0 == 0 %}
         <div class="ml-auto flex-none">
             <div class="flex place-content-end">
+                {% if show_all_frames %}
+                    <a href="?{% add_to_qs show_all_frames='' %}" class="font-bold text-slate-500 border-slate-300 pl-4 pr-4 pb-1 pt-1 mr-2 border-2 rounded-md hover:bg-slate-200 active:ring">Only App Frames</a>
+                {% else %}
+                    <a href="?{% add_to_qs show_all_frames=1 %}" class="font-bold text-slate-500 border-slate-300 pl-4 pr-4 pb-1 pt-1 mr-2 border-2 rounded-md hover:bg-slate-200 active:ring">All Frames</a>
+                {% endif %}
+
+
                 <button class="font-bold text-slate-500 border-slate-300 pl-4 pr-4 pb-1 pt-1 mr-2 border-2 rounded-md hover:bg-slate-200 active:ring" onclick="showAllFrames()">Show all</button>
                 <button class="font-bold text-slate-500 border-slate-300 pl-4 pr-4 pb-1 pt-1 mr-2 border-2 rounded-md hover:bg-slate-200 active:ring" onclick="showInAppFrames()">Show in-app</button>
                 <button class="font-bold text-slate-500 border-slate-300 pl-4 pr-4 pb-1 pt-1 mr-2 border-2 rounded-md hover:bg-slate-200 active:ring" onclick="showRaisingFrame()">Show raise</button>
@@ -53,7 +61,7 @@
 
     {% for frame in exception.stacktrace.frames %}
         {% with frame=frame|pygmentize:event.platform %}
-        
+        {% if show_all_frames or frame.in_app %}
         <div class="bg-white w-full font-mono"> {# per frame div #}
             {% if frame.raise_point %}<span id="raise"></span>{% endif %}
             {% if frame.in_app %}<span id="in-app"></span>{% endif %}
@@ -151,8 +159,8 @@
                 </div>
 
             </div> {# collapsable part #}
-
         </div> {# per frame div #}
+        {% endif %}
 
         {% endwith %}
     {% endfor %} {# frame #}
